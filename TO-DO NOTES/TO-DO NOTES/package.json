@@ -9,13 +9,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chenfengyuan/vue-carousel": "^2.0.0",
+    "ant-design-vue": "^4.2.3",
     "axios": "^1.7.5",
     "vue": "^3.4.29",
+    "vue-carousel": "^0.18.0",
     "vue-router": "^4.4.3",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
+    "sass": "^1.81.0",
+    "sass-embedded": "^1.81.0",
+    "sass-loader": "^16.0.3",
     "vite": "^5.3.1"
   }
 }

@@ -39,13 +39,13 @@
               <div class="title_task">
                 <h3 class="task-item__title">{{ itemTask.name }}</h3>
                 <img
-                  src="@/component/UI/pencil.jpg"
+                  
                   alt="редактировать задачу"
                   class="button_edit--add"
                   @click='openModalEditTask(itemTask.id,item.id)'
                 />
                 <img
-                  src="@/component/UI/basketS.jpg"
+                  
                   alt="редактировать задачу"
                   class="button_edit--add"
                   @click='deleteTasksHandler(itemTask.id)'
@@ -144,7 +144,6 @@
       </div>
     </modal-board>
   </main>
-  <footer-component />
 </template>
 
 <script>
@@ -153,7 +152,6 @@ import { mapActions, mapGetters } from "vuex";
 import EditModalStatuses from "../component/EditModalStatuses.vue";
 import EditModalTask from "../component/EditModalTask.vue";
 import HeaderComponent from "../component/HeaderComponent.vue";
-import FooterComponent from "../component/FooterComponent.vue";
 import ModalBoard from "../component/ModalBoard.vue";
 import ModalTask from "../component/ModalTask.vue";
 
@@ -166,7 +164,6 @@ export default defineComponent({
     EditModalStatuses,
     EditModalTask,
     HeaderComponent,
-    FooterComponent,
     ModalBoard,
     ModalTask,
   },

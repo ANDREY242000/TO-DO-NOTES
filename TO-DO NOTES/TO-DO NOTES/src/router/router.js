@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import TheRegister from "../pages/TheRegister.vue"
-import TheAuth from '../pages/TheAuth.vue'
+// import TheAuth from '../pages/TheAuth.vue'
 import TheBoard from "../pages/TheBoard.vue"
 import TheTasks from "../pages/TheTasks.vue"
 
@@ -11,18 +11,18 @@ const routes = [
     name: 'register',
     component: TheRegister
   },
+  // {
+  //   path: '/auth',
+  //   name: 'auth',
+  //   component: TheAuth
+  // },
   {
-    path: '/auth',
-    name: 'auth',
-    component: TheAuth
-  },
-  {
-    path: '/auth/board',
+    path: '/board',
     name: 'board',
     component: TheBoard
   },
   {
-    path: `/auth/board/:id`,
+    path: `/board/:id`,
     name: ':id',
     component: TheTasks
   }

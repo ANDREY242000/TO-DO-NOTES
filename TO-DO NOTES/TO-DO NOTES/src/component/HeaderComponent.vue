@@ -1,52 +1,47 @@
 <template>
-  <header class="header">
-    <div class="container header__container">
-      <h1 class="header__title">TO-DO NOTES</h1>
-      <div class="header__option">
+  <div class="header">
+    <div class="container">
+      <h1 class="header__title">TO-DO.ru</h1>
+      <div class="container-button">
         <slot></slot>
       </div>
     </div>
-    <div>
-    </div>
-  </header>
+  </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'HeaderComponent'
+  name: "HeaderComponent",
 });
 </script>
 
-<style>
-header {
-    margin-top: 10px;
-}
+<style lang="scss" scoped>
+@use "/src/assets/variables.scss" as *;
 
-.header__container {
+.header {
+  background-color: $Bgcolor_header;
+  height: 80px;
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+
+  .container {
+    margin: 20px;
     display: flex;
     justify-content: space-between;
-    background: #9cb1f1;
-    align-items: center;
+    width: 100%;
 
+    h1 {
+      font-style: $main_font_style;
+      font-size: 36px;
+      color: white;
+    }
 
-
+    .container-button {
+      gap: 15px;
+    }
+  }
 }
-
-.header__title {
-    font-weight: 300;
-
-}
-
-.header__option {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-
-
-
-
 </style>

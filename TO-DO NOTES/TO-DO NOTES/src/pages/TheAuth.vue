@@ -23,21 +23,20 @@
     </div>
     </div>
   </div>
-  <footer-component />
+
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import axios from "axios";
 import HeaderComponent from "@/component/HeaderComponent.vue";
-import FooterComponent from "@/component/FooterComponent.vue";
+
 
 export default defineComponent({
   name: "TheAuth",
 
   components: {
     HeaderComponent,
-    FooterComponent,
   },
   data() {
     return {

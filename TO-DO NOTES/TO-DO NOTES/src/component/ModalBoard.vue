@@ -2,21 +2,22 @@
   <div class="modal">
     <div class="modal__container">
       <a href="#" class="close-modal" @click="closeModal">✖</a>
-      <slot />
+      <slot></slot>
     </div>
   </div>
 </template>
-    
-    <script>
+
+<script>
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "ModalBoard",
 });
 </script>
-    
+
 <style>
 .modal {
+  display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -35,27 +36,5 @@ export default defineComponent({
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   width: 430px;
-}
-
-.close-modal {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  text-decoration: none;
-  color: black;
-  font-size: 24px;
-}
-
-.cancel-button {
-  padding: 10px 20px;
-  background-color: rgb(255, 0, 64);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.cancel-button:hover {
-  background-color: darkred;
 }
 </style>

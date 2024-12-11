@@ -1,74 +1,79 @@
 <template>
-  <header-component>
-    <button @click="pushAuth" class="out_button">выйти</button>
-    <button @click="openModal" class="add-board-button">создать</button>
-  </header-component>
-  <main class="container">
-    <div class="title_header">
-      <h2 class="title_container">cписок досок</h2>
-    </div>
-    <div class="container_board">
-      <div
-        class="board-item"
-        v-for="item in boardList"
-        :key="item.id"
-
-      >
-        <div class="board-item_info">
-          <div class="title_board">
-            <h3>{{ item.name }}</h3>
+  <div class="wrapper">
+    <header-component>
+      <a-button class="button" @click="pushAuth">Выйти</a-button>
+      <a-button class="button" @click="openModal">Добавить доску</a-button>
+    </header-component>
+    <main>
+      <!-- <h2 class="title_container">cписок досок</h2> -->
+      <Carousel class="container_slide" :loop="true">
+        <Slide class="container_board">
+          <div class="board-item" v-for="item in boardList" :key="item.id">
+            <div class="board-item_info">
+              <div class="title_board">
+                <h3>{{ item.name }}</h3>
+              </div>
+              <div>{{ item.description }}</div>
+              <div class="kanban_footer">
+                <button
+                  @click="deleteBoardHandler(item.id)"
+                  class="delete_task"
+                >
+                  удалить
+                </button>
+                <button @click="openEditModal(item.id)" class="patch_task">
+                  изменить
+                </button>
+                <button @click="pushTask(item.id)" class="add_task">
+                  к задачам
+                </button>
+              </div>
+            </div>
           </div>
-          <div>{{ item.description }}</div>
-          <div class="kanban_footer">
-            <button @click="deleteBoardHandler(item.id)" class="delete_task">удалить</button>
-            <button @click="openEditModal(item.id)" class="patch_task" >изменить</button>
-            <button @click="pushTask(item.id)" class="add_task" >к задачам</button>
-          </div>
+        </Slide>
+      </Carousel>
+      <Pagination class="container_pagination"></Pagination>
+      <edit-modal-board v-if="editModalvisible">
+        <div class="form">
+          <input
+            v-model="name"
+            type="text"
+            name="title"
+            placeholder="Введите название доски"
+          />
+          <textarea
+            v-model="descripton"
+            name="description"
+            placeholder="Введите описание доски"
+          ></textarea>
+          <button @click="editBoardHandler">Отправить</button>
+          <button type="button" class="cancel-button" @click="closeEditModal">
+            Отмена
+          </button>
         </div>
-      </div>
-    </div>
-<edit-modal-board v-if="editModalvisible" >
-  <div class="form">
-        <input
-          v-model="name"
-          type="text"
-          name="title"
-          placeholder="Введите название доски"
-        />
-        <textarea
-          v-model="descripton"
-          name="description"
-          placeholder="Введите описание доски"
-        ></textarea>
-        <button @click="editBoardHandler">Отправить</button>
-        <button type="button" class="cancel-button" @click="closeEditModal ">
-          Отмена
-        </button>
-      </div>
-</edit-modal-board>
+      </edit-modal-board>
 
-
-    <modal-board v-if="visible" @closeModal="closeModalBoard">
-      <div class="form">
-        <input
-          v-model="name"
-          type="text"
-          name="title"
-          placeholder="Введите название доски"
-        />
-        <textarea
-          v-model="descripton"
-          name="description"
-          placeholder="Введите описание доски"
-        ></textarea>
-        <button @click="addBoardHandler">Отправить</button>
-        <button type="button" class="cancel-button" @click="closeModal">
-          Отмена
-        </button>
-      </div>
-    </modal-board>
-  </main>
-  <footer-component />
+      <modal-board v-if="visible" @closeModal="closeModalBoard">
+        <div class="form">
+          <input
+            v-model="name"
+            type="text"
+            name="title"
+            placeholder="Введите название доски"
+          />
+          <textarea
+            v-model="descripton"
+            name="description"
+            placeholder="Введите описание доски"
+          ></textarea>
+          <button @click="addBoardHandler">Отправить</button>
+          <button type="button" class="cancel-button" @click="closeModal">
+            Отмена
+          </button>
+        </div>
+      </modal-board>
+    </main>
+  </div>
 </template>
 
 <script>
@@ -76,8 +81,8 @@ import { defineComponent } from "vue";
 import { mapActions, mapGetters } from "vuex";
 import EditModalBoard from "@/component/HeaderComponent.vue";
 import HeaderComponent from "@/component/HeaderComponent.vue";
-import FooterComponent from "@/component/FooterComponent.vue";
 import ModalBoard from "@/component/ModalBoard.vue";
+import Pagination from "@/component/Pagination.vue";
 
 export default defineComponent({
   name: "TheBoard",
@@ -85,8 +90,8 @@ export default defineComponent({
   components: {
     EditModalBoard,
     HeaderComponent,
-    FooterComponent,
     ModalBoard,
+    Pagination,
   },
 
   data() {
@@ -114,14 +119,14 @@ export default defineComponent({
   methods: {
     openEditModal(boardId) {
       this.currenEditBoardId = boardId;
-      this.editModalvisible =true;
+      this.editModalvisible = true;
     },
     editModal() {
       this.visible = true;
     },
 
-    closeEditModal (){
-      this.editModalvisible =false;
+    closeEditModal() {
+      this.editModalvisible = false;
     },
 
     openModal() {
@@ -139,18 +144,17 @@ export default defineComponent({
     }),
 
     async deleteBoardHandler(boardId) {
-      this.currentBoardId=boardId
-      await this.deleteBoard({currentBoardId:boardId});
+      this.currentBoardId = boardId;
+      await this.deleteBoard({ currentBoardId: boardId });
     },
 
-
     async addBoardHandler() {
-      const params ={
-        boardId:this.currenEditBoardId,
+      const params = {
+        boardId: this.currenEditBoardId,
         formData: {
           name: this.name,
           description: this.descripton,
-        }
+        },
       };
       await this.addBoard(params);
       this.name = "";
@@ -158,8 +162,6 @@ export default defineComponent({
       this.visible = false;
       this.closeEditModal();
     },
-
-
 
     async addBoardHandler() {
       await this.addBoard({
@@ -186,56 +188,84 @@ export default defineComponent({
       this.description = "";
       this.boardId = "";
     },
-    pushAuth(){
-      this.$router.push('/auth');
+    pushAuth() {
+      this.$router.push("/");
     },
 
     pushTask(id) {
-      this.$router.push({ path: `/auth/board/${id}` });
+      this.$router.push({ path: `/board/${id}` });
     },
   },
 });
 </script>
 
-<style>
-.board-item {
+<style lang="scss">
+@use "/src/assets/variables.scss" as *;
+
+.wrapper {
+  position: relative;
+  height: 100vh;
+  width: auto;
+
+  .button {
+    font-weight: 400;
+    color: white;
+    font-size: 15px;
+    background-color: $Bgcolor_header;
+    border: #100f0f;
+  }
+
+  main {
+    position: absolute;
+    background-color: $Bgcolor_register;
+    z-index: 1;
+    width: 100%;
+    height: 90.5vh;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-    gap: 24px;
-    flex: 1 0 0;
-    padding: 14px;
-    max-width: 30vh;
-    min-height: 30vh;
-    border-radius: 12px;
-    background-color: #f9df9eb8;
+    flex-direction: column;
+
+    .container_slide {
+      padding: 15px auto;
+      border: #0a090f;
+      gap: 40px;
+      margin: auto;
+      width: 80%;
+      height: 80%;
+
+      .container_board {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .container_pagination {
+        margin: auto;
+      }
+    }
+  }
 }
 
-/* .board-item_info {
+.board-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-} */
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  flex: 1 0 0;
+  padding: 14px;
+  max-width: 30vh;
+  min-height: 30vh;
+  border-radius: 12px;
+  background-color: #f9df9eb8;
+}
 
 .title_board {
   display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.button_edit--add {
-  width: 15px;
-  height: 15px;
-  display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.button_edit--add:hover {
-  cursor: pointer;
-  opacity: 0.5;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .form {
@@ -269,22 +299,17 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: darkblue;
 }
-.title_header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
+
 .title_container {
   color: #0a090f;
   text-align: center;
-  margin: 15px;
 }
 .container_board {
-    display: flex;
-    padding: 40px;
-    align-items: flex-start;
-    gap: 40px;
-    margin: 10px 0;
+  display: flex;
+  padding: 40px;
+  align-items: flex-start;
+  gap: 40px;
+  margin: 10px 0;
 }
 .main_container_board {
   display: wrap;
@@ -297,13 +322,6 @@ button[type="submit"]:hover {
   border-radius: 12px;
   gap: 40px;
   margin: 10px 0;
-}
-.kanban_footer {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  justify-content: flex-start;
-  width: 100%;
 }
 
 .add_task {
